@@ -12,6 +12,8 @@ main {
     max-width: 600px;
     margin: auto;
     padding: 5vh 0px;
+    /* always show scroll bar */
+    min-height: calc(100vh + 1px);
 }
 
 h1, h2, h3 {

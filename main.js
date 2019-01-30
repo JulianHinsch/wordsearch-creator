@@ -4,15 +4,21 @@ function getRandomLetter() {
 }
 
 function generate2dNullArray(width, height) {
-    const result = [];
-    for (let i = 0; i < height; i++) {
-        result.push(new Array(width).fill(null));
-    }
-    return result;
+    return new Array(height).fill(new Array(width).fill(null));
 }
 
 function createCharArray(width, height, wordArr) {
     const result = generate2dNullArray(width, height);
+
+
+    //word placement logic here...
+
+
+    wordArr.forEach(function(word) {
+
+    })
+
+
     return result;
 }
 
@@ -35,9 +41,9 @@ function createWordSearch({ width, height, wordArr }) {
 }
 
 function validateWords(wordArr, maxDimension) {
-    for(let word in wordArr) {
-        if(word.length > maxDimension) {
-            throw new Error('You entered a word that was too long.');
+    for(let i = 0; i < wordArr.length; i++) {
+        if(wordArr[i].length > maxDimension) {
+            alert('You entered a word that was too long.');
             return false;
         }
     }
@@ -45,7 +51,12 @@ function validateWords(wordArr, maxDimension) {
 }
 
 function validateDimensions(width, height) {
-    return width >= 15 && width <= 30 && height >= 15 && height <= 30;
+    if(width >= 15 && width <= 30 && height >= 15 && height <= 30;) {
+        return true;
+    } else {
+        alert('You entered an invalid dimension.')
+        return false;
+    }
 }
 
 function validateForm({ width, height, wordArr }) {
@@ -64,9 +75,9 @@ function parseWords(rawInput) {
 function handleFormSubmit(event) {
     event.preventDefault();
     const formData = {
-        width: event.target[0].value,
-        height: event.target[1].value,
-        words: [...parseWords(event.target[2].value)],
+        width: parseInt(event.target[0].value),
+        height: parseInt(event.target[1].value),
+        wordArr: [...parseWords(event.target[2].value)],
     }
     console.log(formData);
     if(validateForm(formData)) {
