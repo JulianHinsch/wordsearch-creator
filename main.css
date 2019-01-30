@@ -1,0 +1,80 @@
+* {
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    margin: 0px;
+}
+
+main {
+    width: 90%;
+    max-width: 600px;
+    margin: auto;
+    padding: 5vh 0px;
+}
+
+h1, h2, h3 {
+    margin: 0px;
+}
+
+h1 {
+    padding: 20px 0px;
+    text-align: center;
+}
+
+h3 {
+    color: #666;
+}
+
+ul {
+    list-style-type: none;
+    padding-left: 0px;
+}
+
+li {
+    margin-bottom: 40px;
+}
+
+label {
+    margin-top: 15px;
+}
+
+label,
+input,
+textarea {
+    display: block;
+    resize: none;
+}
+
+input, textarea {
+    padding: 5px;
+    border: 1px solid #dddddd;
+    font-size: 18px;
+    margin: 5px 0px;
+    width: 100%;
+    text-transform: lowercase;
+}
+
+button {
+    padding: 15px;
+    margin: 10px 10px 0px 0px;
+    border: 1px solid #ddd;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+.output {
+    width: 100%;
+}
+
+.output table {
+    border: 1px solid #ddd;
+    margin: auto;
+    padding: 10px;
+}
+
+.output td {
+    width: 1.5em;
+    text-align: center;
+}
