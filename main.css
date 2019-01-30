@@ -58,10 +58,14 @@ input, textarea {
 
 button {
     padding: 15px;
-    margin: 10px 10px 0px 0px;
-    border: 1px solid #ddd;
+    margin: 20px 10px 0px 0px;
+    border: 1px solid black;
     cursor: pointer;
     font-size: 18px;
+}
+
+button[type='reset'] {
+    border-color: #ddd;
 }
 
 .output {
@@ -70,7 +74,6 @@ button {
 
 .output table {
     border: 1px solid #ddd;
-    margin: auto;
     padding: 10px;
 }
 

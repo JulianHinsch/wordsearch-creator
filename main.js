@@ -3,13 +3,27 @@ function getRandomLetter() {
     return alphabet.charAt(Math.floor(Math.random() * alphabet.length));
 }
 
-function createWordSearch(width, height, words) {
-    const tbody = document.createElement('tbody');
+function generate2dNullArray(width, height) {
+    const result = [];
     for (let i = 0; i < height; i++) {
+        result.push(new Array(width).fill(null));
+    }
+    return result;
+}
+
+function createCharArray(width, height, wordArr) {
+    const result = generate2dNullArray(width, height);
+    return result;
+}
+
+function createWordSearch({ width, height, wordArr }) {
+    const charArray = createCharArray(width, height, wordArr);
+    const tbody = document.createElement('tbody');
+    for (let i = 0; i < charArray.length; i++) {
         let tr = document.createElement('tr');
-        for (let i = 0; i < array.length; i++) {
+        for (let j = 0; j < charArray[i].length; j++) {
             let td = document.createElement('td');
-            td.innerHTML = getRandomLetter();
+            td.innerHTML = charArray[i][j] || getRandomLetter();
             tr.appendChild(td);
         }
         tbody.appendChild(tr)
@@ -20,8 +34,8 @@ function createWordSearch(width, height, words) {
     output.appendChild(table);
 }
 
-function validateWords(words, maxDimension) {
-    for(let word in words) {
+function validateWords(wordArr, maxDimension) {
+    for(let word in wordArr) {
         if(word.length > maxDimension) {
             throw new Error('You entered a word that was too long.');
             return false;
@@ -31,20 +45,20 @@ function validateWords(words, maxDimension) {
 }
 
 function validateDimensions(width, height) {
-    return width >= 15 && width <= 45 && height >= 15 && height <= 45;
+    return width >= 15 && width <= 30 && height >= 15 && height <= 30;
 }
 
-function validateForm({ width, height, words }) {
+function validateForm({ width, height, wordArr }) {
     const maxDimension = Math.max(width, height);
-    return validateDimensions(width, height) && validateWords(words, maxDimension);
+    return validateDimensions(width, height) && validateWords(wordArr, maxDimension);
 }
 
 function parseWords(rawInput) {
     rawInput = rawInput.replace(/[^a-zA-Z]/g, ","); //remove non letters
-    words = rawInput.split(',');
-    words = words.filter(word => word); //remove empty strings
-    words = words.map(word => word.toLowerCase());
-    return words;
+    wordArr = rawInput.split(',');
+    wordArr = wordArr.filter(word => word); //remove empty strings
+    wordArr = wordArr.map(word => word.toLowerCase());
+    return wordArr;
 }
 
 function handleFormSubmit(event) {
@@ -56,21 +70,12 @@ function handleFormSubmit(event) {
     }
     console.log(formData);
     if(validateForm(formData)) {
-        console.log('form validated');
         createWordSearch(formData);
     }
 }
 
-function main() {
-    window.addEventListener('submit', handleFormSubmit);
-}
-
 document.onreadystatechange = function() {
     if(document.readyState === 'complete') {
-        try {
-            main();            
-        } catch (err) {
-            alert('Error:', err.message);
-        }
+        window.addEventListener('submit', handleFormSubmit)          
     }
 }
