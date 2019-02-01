@@ -24,33 +24,40 @@ function getIterators(direction) {
     }[direction]);
 }
 
-function placeWord(charArray, word) {
+function placeWord(word, charArray) {
+    const directions = ['l','r','u','d','lu','ld','ru','rd'];
     randomDirection = directions[getRandomIndex(directions.length)];
-    randomX = getRandomIndex(width);
-    randomY = getRandomIndex(height);
+    randomX = getRandomIndex(charArray[0].length);  //TODO test
+    randomY = getRandomIndex(charArray.length); //TODO test
     iterators = getIterators(randomDirection);
     for(let i=0; i < word.length; i++) {
-        selectedChar = charArray[randomY * iterators[0]][randomX * iterators[1]];
+        selectedChar = charArray[randomY + (iterators[0]*i)][randomX + (iterators[1]*i)];
         if(selectedChar === null || selectedChar === word.charAt(i)) {
             continue;
         } else {
-            return false;
+            throw(err)
         }
     }
     for(let i=0; i < word.length; i++) {
-        charArray[randomY * iterators[0]][randomX * iterators[1]] = word.charAt[i];
+        charArray[randomY + (iterators[0]*i)][randomX + (iterators[1]*i)] = word.charAt(i);
     }
-    return true;
+    console.log(charArray);
+    return charArray;
 }
 
 function createCharArray({ width, height, wordArr }) {
-    const directions = ['l','r','u','d','lu','ld','ru','rd'];
-    const charArray = generate2dNullArray(width, height);
+    var charArray = generate2dNullArray(width, height);
     wordArr.forEach(function(word) {
         isPlaced = false;
         while(!isPlaced) {
-            isPlaced = placeWord(charArray, word);
+            try {
+                charArray = placeWord(word, charArray);
+                isPlaced = true;
+            } catch(err) {
+                continue;
+            }
         }
+        console.log('Word placed');
     })
     return charArray;
 }
@@ -63,7 +70,8 @@ function placeWordSearch(charArray) {
         let tr = document.createElement('tr');
         for (let j = 0; j < charArray[i].length; j++) {
             let td = document.createElement('td');
-            td.innerHTML = charArray[i][j] || getRandomLetter();
+            //td.innerHTML = charArray[i][j] || getRandomLetter();
+            td.innerHTML = charArray[i][j];
             tr.appendChild(td);
         }
         tbody.appendChild(tr)
@@ -104,6 +112,7 @@ function parseWords(rawInput) {
     return wordArr;
 }
 
+//event handler
 function handleFormSubmit(event) {
     event.preventDefault();
     const formData = {
