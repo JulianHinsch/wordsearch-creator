@@ -8,7 +8,8 @@ function getRandomLetter() {
 }
 
 function generate2dNullArray(width, height) {
-    return new Array(height).fill(new Array(width).fill(null));
+    //callback instantiates a new array every time
+    return Array(height).fill(null).map(row => Array(width).fill(null));
 }
 
 function getIterators(direction) {
@@ -32,37 +33,37 @@ function placeWord(word, charArray) {
     iterators = getIterators(randomDirection);
     for(let i=0; i < word.length; i++) {
         selectedChar = charArray[randomY + (iterators[0]*i)][randomX + (iterators[1]*i)];
-        if(selectedChar === null || selectedChar === word.charAt(i)) {
+        if(selectedChar === null || selectedChar == word.charAt(i)) {
             continue;
         } else {
-            throw(err)
+            throw(new Error())
         }
     }
     for(let i=0; i < word.length; i++) {
-        charArray[randomY + (iterators[0]*i)][randomX + (iterators[1]*i)] = word.charAt(i);
+        let yPos = randomY + (iterators[0]*i);
+        let xPos = randomX + (iterators[1]*i);
+        charArray[yPos][xPos] = word.charAt(i); 
     }
-    console.log(charArray);
     return charArray;
 }
 
 function createCharArray({ width, height, wordArr }) {
     var charArray = generate2dNullArray(width, height);
-    wordArr.forEach(function(word) {
-        isPlaced = false;
+    for (let i = 0; i < wordArr.length; i++) {
+        let isPlaced = false;
         while(!isPlaced) {
             try {
-                charArray = placeWord(word, charArray);
+                charArray = placeWord(wordArr[i], charArray);
                 isPlaced = true;
             } catch(err) {
                 continue;
             }
         }
-        console.log('Word placed');
-    })
+    }
     return charArray;
 }
 
-function placeWordSearch(charArray) {
+function appendWordSearch(charArray) {
     const output = document.getElementById('output');    
     const table = document.createElement('table'); 
     const tbody = document.createElement('tbody');
@@ -70,14 +71,25 @@ function placeWordSearch(charArray) {
         let tr = document.createElement('tr');
         for (let j = 0; j < charArray[i].length; j++) {
             let td = document.createElement('td');
-            //td.innerHTML = charArray[i][j] || getRandomLetter();
-            td.innerHTML = charArray[i][j];
+            if(charArray[i][j]) {
+                td.innerHTML = charArray[i][j];
+                td.className = 'flagged';
+            } else {
+                td.innerHTML = getRandomLetter();
+            }
             tr.appendChild(td);
         }
         tbody.appendChild(tr)
     }
     table.appendChild(tbody);
+    handleReset();
     output.appendChild(table);
+}
+
+function appendSolveButton() {
+    const output = document.getElementById('output');    
+    output.insertAdjacentHTML("beforeend","<button id='solve' type='button'>Reveal Words</button>");
+    document.getElementById('solve').addEventListener('click', revealSolution);
 }
 
 function validateWords(wordArr, maxDimension) {
@@ -112,7 +124,6 @@ function parseWords(rawInput) {
     return wordArr;
 }
 
-//event handler
 function handleFormSubmit(event) {
     event.preventDefault();
     const formData = {
@@ -122,12 +133,25 @@ function handleFormSubmit(event) {
     }
     if(validateFormData(formData)) {
         charArray = createCharArray(formData)
-        placeWordSearch(charArray);
+        appendWordSearch(charArray);
+        appendSolveButton();
+    }
+}
+
+function handleReset(event) {
+    document.getElementById('output').innerHTML = '';
+}
+
+function revealSolution() {
+    var all = document.getElementsByClassName('flagged');
+    for (let i = 0; i < all.length; i++) {
+      all[i].style.color = 'red';
     }
 }
 
 document.onreadystatechange = function() {
     if(document.readyState === 'complete') {
-        window.addEventListener('submit', handleFormSubmit)          
+        window.addEventListener('submit', handleFormSubmit)
+        window.addEventListener('reset', handleReset)         
     }
 }

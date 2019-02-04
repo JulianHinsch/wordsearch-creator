@@ -61,13 +61,13 @@ input, textarea {
 button {
     padding: 15px;
     margin: 20px 10px 0px 0px;
-    border: 1px solid black;
+    border: 1px solid #ddd;
     cursor: pointer;
     font-size: 18px;
 }
 
-button[type='reset'] {
-    border-color: #ddd;
+button[type='submit'] {
+    border-color: black;
 }
 
 .output {
