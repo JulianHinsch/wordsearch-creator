@@ -72,7 +72,7 @@ function appendWordSearch(charArray) {
         tbody.appendChild(tr)
     }
     table.appendChild(tbody);
-    handleReset();
+    clearOutput();
     output.appendChild(table);
 }
 
@@ -128,8 +128,12 @@ function handleFormSubmit(event) {
     }
 }
 
-function handleReset(event) {
+function clearOutput() {
     document.getElementById('output').innerHTML = '';
+}
+
+function handleReset(event) {
+    clearOutput();
 }
 
 function revealSolution() {
