@@ -12,25 +12,15 @@ function generate2dNullArray(width, height) {
     return Array(height).fill(null).map(row => Array(width).fill(null));
 }
 
-function getIterators(direction) {
-    return ({
-        'l':[-1,0],
-        'r':[1,0],
-        'u':[0,1],
-        'd':[0,-1],
-        'lu':[-1,1],
-        'ld':[-1,-1],
-        'ru':[1,1],
-        'rd':[1,-1],
-    }[direction]);
+function getRandomIterators() {
+    const iterators = [[-1,0],[1,0],[0,1],[0,-1],[-1,1],[-1,-1],[1,1],[1,-1]];
+    return iterators[getRandomIndex(iterators.length)];
 }
 
 function placeWord(word, charArray) {
-    const directions = ['l','r','u','d','lu','ld','ru','rd'];
-    randomDirection = directions[getRandomIndex(directions.length)];
-    randomX = getRandomIndex(charArray[0].length);  //TODO test
-    randomY = getRandomIndex(charArray.length); //TODO test
-    iterators = getIterators(randomDirection);
+    randomX = getRandomIndex(charArray[0].length);
+    randomY = getRandomIndex(charArray.length);
+    iterators = getRandomIterators();
     for(let i=0; i < word.length; i++) {
         selectedChar = charArray[randomY + (iterators[0]*i)][randomX + (iterators[1]*i)];
         if(selectedChar === null || selectedChar == word.charAt(i)) {
