@@ -18,9 +18,9 @@ function getRandomIterators() {
 }
 
 function placeWord(word, charArray) {
-    randomX = getRandomIndex(charArray[0].length);
-    randomY = getRandomIndex(charArray.length);
-    iterators = getRandomIterators();
+    const randomX = getRandomIndex(charArray[0].length);
+    const randomY = getRandomIndex(charArray.length);
+    const iterators = getRandomIterators();
     for(let i=0; i < word.length; i++) {
         selectedChar = charArray[randomY + (iterators[0]*i)][randomX + (iterators[1]*i)];
         if(selectedChar === null || selectedChar == word.charAt(i)) {
@@ -108,7 +108,7 @@ function validateFormData({ width, height, wordArr }) {
 
 function parseWords(rawInput) {
     rawInput = rawInput.replace(/[^a-zA-Z]/g, ","); //remove non letters
-    wordArr = rawInput.split(',');
+    var wordArr = rawInput.split(',');
     wordArr = wordArr.filter(word => word); //remove empty strings
     wordArr = wordArr.map(word => word.toLowerCase());
     return wordArr;
@@ -122,7 +122,7 @@ function handleFormSubmit(event) {
         wordArr: [...parseWords(event.target[2].value)],
     }
     if(validateFormData(formData)) {
-        charArray = createCharArray(formData)
+        const charArray = createCharArray(formData)
         appendWordSearch(charArray);
         appendSolveButton();
     }
@@ -137,7 +137,7 @@ function handleReset(event) {
 }
 
 function revealSolution() {
-    var all = document.getElementsByClassName('flagged');
+    const all = document.getElementsByClassName('flagged');
     for (let i = 0; i < all.length; i++) {
       all[i].style.color = 'red';
     }
